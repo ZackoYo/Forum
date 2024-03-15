@@ -1,6 +1,6 @@
 using System;
 
-namespace ForumAPI
+namespace Forum.Web
 {
 	public class WeatherForecast
 	{

@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ForumAPI.Controllers
+namespace Forum.Web.Controllers
 {
 	[ApiController]
 	[Route("api/v1/[controller]")]

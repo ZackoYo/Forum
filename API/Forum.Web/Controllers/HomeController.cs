@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace ForumAPI.Controllers;
+namespace Forum.Web.Controllers;
 
 public class HomeController : BaseController
 {

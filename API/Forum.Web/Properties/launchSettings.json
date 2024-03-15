@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "ForumAPI": {
+    "Forum.Web": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

@@ -1,5 +1,6 @@
 ﻿using Forum.Data.Contracts.Models;
 using Forum.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -66,6 +67,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 		{
 			foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
 		}
+
+		// Customize table names for Identity entities
+		builder.Entity<ApplicationUser>().ToTable("Users");
+		builder.Entity<ApplicationRole>().ToTable("Roles");
+		builder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
+		builder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims");
+		builder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins");
+		builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
+		builder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
 	}
 
 	private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

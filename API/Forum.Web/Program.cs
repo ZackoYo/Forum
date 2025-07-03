@@ -20,12 +20,6 @@ using Forum.Infrastructure.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Configuration
-//	.SetBasePath(Directory.GetCurrentDirectory())
-//	.AddJsonFile("appsettings.json", false, true)
-//	.AddEnvironmentVariables();
-
-// Add services to the container.
 
 builder.Services.AddDbContext<ApplicationDbContext>(
 	options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -33,9 +27,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 builder.Services.AddDefaultIdentity<ApplicationUser>()
 	.AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
-/* If decide to simplify the password rules
-builder.Services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-	.AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>(); */
 
 builder.Services.Configure<CookiePolicyOptions>(
 	options =>
@@ -47,6 +38,12 @@ builder.Services.Configure<CookiePolicyOptions>(
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+});
 
 builder.Services.AddSingleton(builder.Configuration);
 

@@ -17,6 +17,9 @@ using Forum.Infrastructure.Contracts.InternalServices;
 using Forum.Infrastructure.ExternalServices.MessagingService;
 using Forum.Infrastructure.InternalServices;
 using Forum.Infrastructure.Mapping;
+using Forum.Application.Services;
+using Forum.Infrastructure.Services;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +58,9 @@ builder.Services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 // Application services
 builder.Services.AddTransient<IEmailSender, NullMessageSender>();
 builder.Services.AddTransient<ISettingsService, SettingsService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 
 var app = builder.Build();
 
@@ -75,6 +81,8 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 
 

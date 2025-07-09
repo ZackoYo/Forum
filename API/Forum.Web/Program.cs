@@ -23,20 +23,18 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddDbContext<ApplicationDbContext>(
-	options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>()
-	.AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-
+    .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.Configure<CookiePolicyOptions>(
-	options =>
-	{
-		options.CheckConsentNeeded = context => true;
-		options.MinimumSameSitePolicy = SameSiteMode.None;
-	});
+    options =>
+    {
+        options.CheckConsentNeeded = context => true;
+        options.MinimumSameSitePolicy = SameSiteMode.None;
+    });
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -65,27 +63,24 @@ builder.Services.AddScoped<ICommentService, CommentService>();
 var app = builder.Build();
 
 // Seed data on application startup
-
 using (var serviceScope = app.Services.CreateScope())
 {
-	var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-	dbContext.Database.Migrate();
-	new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+    new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
 }
 
 AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
 
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
-
 app.MapControllers();
 
 app.Run();

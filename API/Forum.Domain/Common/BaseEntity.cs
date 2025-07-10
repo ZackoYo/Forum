@@ -1,3 +1,5 @@
+using Forum.Data.Contracts.Models;
+
 namespace Forum.Domain.Common;
 
 public abstract class BaseEntity<TKey>
@@ -7,7 +9,7 @@ public abstract class BaseEntity<TKey>
     public DateTime? ModifiedOn { get; set; }
 }
 
-public abstract class BaseDeletableEntity<TKey> : BaseEntity<TKey>
+public abstract class BaseDeletableEntity<TKey> : BaseEntity<TKey>, IDeletableEntity
 {
     public bool IsDeleted { get; set; }
     public DateTime? DeletedOn { get; set; }

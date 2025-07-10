@@ -1,5 +1,6 @@
 using Forum.Data.Models;
 using Forum.Domain.Common;
+using Forum.Data.Contracts.Models;
 
 namespace Forum.Domain.Entities;
 

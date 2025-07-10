@@ -1,11 +1,10 @@
-using Forum.Data.Models;
+using Forum.Domain.Common;
 
 namespace Forum.Domain.Entities;
 
-public class Vote : BaseModel<int>
+public class Vote : BaseEntity<int>
 {
     public string UserId { get; set; }
-    public virtual ApplicationUser User { get; set; }
 
     public int? PostId { get; set; }
     public virtual Post Post { get; set; }

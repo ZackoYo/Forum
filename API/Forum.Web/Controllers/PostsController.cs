@@ -1,4 +1,42 @@
-﻿namespace Forum.Web.Controllers
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Forum.Application.DTOs.Posts;
+using Forum.Application.DTOs.Comments;
+using Forum.Application.Services;
+using Forum.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
+
+namespace Forum.Web.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class PostsController : ControllerBase
+{
+    private readonly IPostService _postService;
+
+    public PostsController(IPostService postService)
+    {
+        _postService = postService;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<PostListDto>>> GetPosts(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string sortBy = "created",
+        [FromQuery] bool descending = true)
+    {
+        var posts = await _postService.GetPostsAsync(page, pageSize, sortBy, descending);
+        return Ok(posts);
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<PostDto>> GetPostById(int id)
+    {
+        var post = await _postService.GetPostByIdAsync(id);
+        return Ok(post);
+    }
 {
     public class PostsController : BaseController
     {

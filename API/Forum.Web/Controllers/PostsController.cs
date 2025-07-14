@@ -54,8 +54,29 @@ public class PostsController : ControllerBase
         var posts = await _postService.GetPostsByCategoryAsync(categoryId, page, pageSize);
         return Ok(posts);
     }
+    [Authorize]
+    [HttpPost]
+    public async Task<ActionResult<PostDto>> CreatePost([FromBody] CreatePostRequest request)
+    {
+        var post = await _postService.CreatePostAsync(request);
+        return CreatedAtAction(nameof(GetPostById), new { id = post.Id }, post);
+    }
+
+    [Authorize]
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<PostDto>> UpdatePost(int id, [FromBody] UpdatePostRequest request)
+    {
+        var post = await _postService.UpdatePostAsync(id, request);
+        return Ok(post);
+    }
+
+    [Authorize]
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeletePost(int id)
 {
-    public class PostsController : BaseController
+        await _postService.DeletePostAsync(id);
+        return NoContent();
+    }
     {
 
     }

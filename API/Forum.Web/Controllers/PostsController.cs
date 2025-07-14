@@ -37,6 +37,23 @@ public class PostsController : ControllerBase
         var post = await _postService.GetPostByIdAsync(id);
         return Ok(post);
     }
+
+    [HttpGet("slug/{slug}")]
+    public async Task<ActionResult<PostDto>> GetPostBySlug(string slug)
+    {
+        var post = await _postService.GetPostBySlugAsync(slug);
+        return Ok(post);
+    }
+
+    [HttpGet("category/{categoryId:int}")]
+    public async Task<ActionResult<IEnumerable<PostListDto>>> GetPostsByCategory(
+        int categoryId,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        var posts = await _postService.GetPostsByCategoryAsync(categoryId, page, pageSize);
+        return Ok(posts);
+    }
 {
     public class PostsController : BaseController
     {

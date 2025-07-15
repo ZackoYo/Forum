@@ -39,12 +39,12 @@ builder.Services.Configure<CookiePolicyOptions>(
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddApiVersioning(options =>
-{
-    options.DefaultApiVersion = new ApiVersion(1, 0);
-    options.AssumeDefaultVersionWhenUnspecified = true;
-    options.ReportApiVersions = true;
-});
+// builder.Services.AddApiVersioning(options =>
+// {
+//     options.DefaultApiVersion = new ApiVersion(1, 0);
+//     options.AssumeDefaultVersionWhenUnspecified = true;
+//     options.ReportApiVersions = true;
+// });
 
 builder.Services.AddSingleton(builder.Configuration);
 

@@ -74,7 +74,7 @@ public class PostsController : ControllerBase
     [Authorize]
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeletePost(int id)
-{
+    {
         await _postService.DeletePostAsync(id);
         return NoContent();
     }

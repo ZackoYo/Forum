@@ -54,6 +54,7 @@ public class PostsController : ControllerBase
         var posts = await _postService.GetPostsByCategoryAsync(categoryId, page, pageSize);
         return Ok(posts);
     }
+
     [Authorize]
     [HttpPost]
     public async Task<ActionResult<PostDto>> CreatePost([FromBody] CreatePostRequest request)
@@ -77,7 +78,22 @@ public class PostsController : ControllerBase
         await _postService.DeletePostAsync(id);
         return NoContent();
     }
-    {
 
+    [Authorize]
+    [HttpPost("{id:int}/vote")]
+    public async Task<ActionResult> VotePost(int id, [FromBody] VoteType voteType)
+    {
+        await _postService.VotePostAsync(id, voteType);
+        return NoContent();
+    }
+
+    [HttpGet("{id:int}/comments")]
+    public async Task<ActionResult<IEnumerable<CommentDto>>> GetPostComments(
+        int id,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        var comments = await _postService.GetPostCommentsAsync(id, page, pageSize);
+        return Ok(comments);
     }
 }

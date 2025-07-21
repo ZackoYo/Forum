@@ -38,4 +38,12 @@ public class CategoriesController : ControllerBase
         var category = await _categoryService.GetCategoryBySlugAsync(slug);
         return Ok(category);
     }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public async Task<ActionResult<CategoryDto>> CreateCategory([FromBody] CreateCategoryRequest request)
+    {
+        var category = await _categoryService.CreateCategoryAsync(request);
+        return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category);
+    }
 }

@@ -8,5 +8,6 @@ public interface ICategoryService
     T GetByName<T>(string name);
     Task<CategoryDto> GetCategoryByIdAsync(int id);
     Task<CategoryDto> GetCategoryBySlugAsync(string slug);
-
+    Task<CategoryDto> CreateCategoryAsync(CreateCategoryRequest request);
+   
 }

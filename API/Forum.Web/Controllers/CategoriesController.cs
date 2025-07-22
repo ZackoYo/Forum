@@ -46,4 +46,12 @@ public class CategoriesController : ControllerBase
         var category = await _categoryService.CreateCategoryAsync(request);
         return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category);
     }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<CategoryDto>> UpdateCategory(int id, [FromBody] UpdateCategoryRequest request)
+    {
+        var category = await _categoryService.UpdateCategoryAsync(id, request);
+        return Ok(category);
+    }
 }

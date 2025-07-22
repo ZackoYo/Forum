@@ -9,5 +9,5 @@ public interface ICategoryService
     Task<CategoryDto> GetCategoryByIdAsync(int id);
     Task<CategoryDto> GetCategoryBySlugAsync(string slug);
     Task<CategoryDto> CreateCategoryAsync(CreateCategoryRequest request);
-   
+    Task<CategoryDto> UpdateCategoryAsync(int id, UpdateCategoryRequest request);
 }

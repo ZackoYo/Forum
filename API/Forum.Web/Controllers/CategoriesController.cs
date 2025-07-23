@@ -54,4 +54,12 @@ public class CategoriesController : ControllerBase
         var category = await _categoryService.UpdateCategoryAsync(id, request);
         return Ok(category);
     }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeleteCategory(int id)
+    {
+        await _categoryService.DeleteCategoryAsync(id);
+        return NoContent();
+    }
 }

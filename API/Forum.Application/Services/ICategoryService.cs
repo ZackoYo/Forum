@@ -10,4 +10,5 @@ public interface ICategoryService
     Task<CategoryDto> GetCategoryBySlugAsync(string slug);
     Task<CategoryDto> CreateCategoryAsync(CreateCategoryRequest request);
     Task<CategoryDto> UpdateCategoryAsync(int id, UpdateCategoryRequest request);
+    Task DeleteCategoryAsync(int id);
 }

@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Areas\**" />
+    <Content Remove="Controllers\Areas\**" />
+    <EmbeddedResource Remove="Controllers\Areas\**" />
+    <None Remove="Controllers\Areas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.16" />
@@ -17,11 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Forum.Data\Forum.Data.csproj" />
     <ProjectReference Include="..\Forum.Infrastructure\Forum.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\Areas\Administration\" />
-    <Folder Include="Controllers\Areas\Identity\" />
   </ItemGroup>
 
 </Project>

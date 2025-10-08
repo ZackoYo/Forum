@@ -1,0 +1,72 @@
+<ng-container *ngIf="post$ | async as post; else loadingPost">
+  <ng-container *ngIf="post; else notFound">
+    <section class="post-hero">
+      <div class="breadcrumb">
+        <a routerLink="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <a routerLink="/categories">Categories</a>
+        <span aria-hidden="true">/</span>
+        <a [routerLink]="['/categories', toCategoryLink(post.categoryName)]">{{ post.categoryName }}</a>
+        <span aria-hidden="true">/</span>
+        <span>{{ post.title }}</span>
+      </div>
+
+      <h1>{{ post.title }}</h1>
+
+      <div class="post-meta">
+        <div class="meta-left">
+          <span>by <strong>{{ post.authorName }}</strong></span>
+          <span class="dot">•</span>
+          <span>{{ post.createdOn | date: 'longDate' }}</span>
+        </div>
+        <div class="meta-right">
+          <span><strong>{{ post.viewCount }}</strong> views</span>
+          <span><strong>{{ post.votesCount }}</strong> votes</span>
+          <span><strong>{{ post.commentsCount }}</strong> replies</span>
+        </div>
+      </div>
+
+      <ul class="tags" *ngIf="post.tags?.length">
+        <li *ngFor="let tag of post.tags; trackBy: trackByTag">#{{ tag }}</li>
+      </ul>
+
+      <div class="post-body">
+        {{ post.content }}
+      </div>
+    </section>
+
+    <section class="comments">
+      <header>
+        <h2>Comments</h2>
+        <p class="muted" *ngIf="isLoadingComments()">Loading comments…</p>
+      </header>
+
+      <p class="error" *ngIf="commentsError()">{{ commentsError() }}</p>
+
+      <ng-container *ngIf="comments$ | async as comments">
+        <p class="muted" *ngIf="!comments.length && !commentsError() && !isLoadingComments()">
+          Nobody has replied yet. Sign in to start the conversation.
+        </p>
+
+        <app-comment-thread *ngIf="comments.length" [comments]="comments"></app-comment-thread>
+      </ng-container>
+    </section>
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingPost>
+  <div class="loading-state">
+    <span class="spinner" aria-hidden="true"></span>
+    <p>Loading discussion…</p>
+  </div>
+</ng-template>
+
+<ng-template #notFound>
+  <section class="not-found">
+    <h1>Post not found</h1>
+    <p>
+      We couldn't find that discussion. Head back to the <a routerLink="/">home page</a> or browse the
+      <a routerLink="/categories">categories</a>.
+    </p>
+  </section>
+</ng-template>

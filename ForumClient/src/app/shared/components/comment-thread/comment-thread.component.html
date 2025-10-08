@@ -1,0 +1,20 @@
+<ul class="comment-thread" [style.--depth]="depth">
+  <li *ngFor="let comment of comments ?? []; trackBy: trackByComment" class="comment-item">
+    <article>
+      <header>
+        <div class="author">
+          <span class="name">{{ comment.authorName }}</span>
+          <span class="meta">{{ comment.createdOn | date: 'medium' }}</span>
+        </div>
+        <span class="votes">{{ comment.votesCount }} votes</span>
+      </header>
+      <p class="content">{{ comment.content }}</p>
+    </article>
+
+    <app-comment-thread
+      *ngIf="comment.replies?.length"
+      [comments]="comment.replies"
+      [depth]="depth + 1"
+    ></app-comment-thread>
+  </li>
+</ul>

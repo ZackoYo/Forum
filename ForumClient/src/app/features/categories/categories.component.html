@@ -1,0 +1,50 @@
+<section class="page-header">
+  <h1>Categories</h1>
+  <p class="muted">Explore every corner of the community. Each category groups conversations around a common theme.</p>
+</section>
+
+<section class="category-section">
+  <ng-container *ngIf="categories$ | async as categories; else loading">
+    <ng-container *ngIf="hasError(); else categoryList">
+      <p class="error">{{ hasError() }}</p>
+    </ng-container>
+
+    <ng-template #categoryList>
+      <ul class="category-list" *ngIf="categories.length; else emptyState">
+        <li *ngFor="let category of categories; trackBy: trackByCategory" class="category-item">
+          <article>
+            <header>
+              <div>
+                <h2>
+                  <a [routerLink]="['/categories', category.slug]">{{ category.name }}</a>
+                </h2>
+                <p class="muted">{{ category.description }}</p>
+              </div>
+              <span class="badge">{{ category.postsCount }} posts</span>
+            </header>
+
+            <div class="subcategories" *ngIf="category.subCategories?.length">
+              <p class="muted">Subcategories</p>
+              <ul>
+                <li *ngFor="let sub of category.subCategories; trackBy: trackBySubCategory">
+                  <a [routerLink]="['/categories', sub.slug]">{{ sub.name }}</a>
+                </li>
+              </ul>
+            </div>
+          </article>
+        </li>
+      </ul>
+    </ng-template>
+  </ng-container>
+</section>
+
+<ng-template #loading>
+  <div class="loading-state">
+    <span class="spinner" aria-hidden="true"></span>
+    <p>Loading categories…</p>
+  </div>
+</ng-template>
+
+<ng-template #emptyState>
+  <p class="muted">No categories have been created yet.</p>
+</ng-template>

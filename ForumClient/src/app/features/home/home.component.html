@@ -1,0 +1,105 @@
+<section class="hero">
+  <div class="hero-content">
+    <h1>Share your knowledge with the community</h1>
+    <p>
+      Discover curated categories, follow the conversations that matter, and help others by sharing what you know.
+    </p>
+    <div class="hero-actions">
+      <a routerLink="/" class="cta">Browse categories</a>
+      <a routerLink="/posts/new" class="secondary-cta">Start a discussion</a>
+    </div>
+  </div>
+</section>
+
+<section class="home-sections">
+  <div class="latest-discussions">
+    <div class="section-heading">
+      <h2>Latest discussions</h2>
+      <p class="muted">Stay on top of what the community is talking about right now.</p>
+    </div>
+
+    <ng-container *ngIf="latestPosts$ | async as posts; else postsLoading">
+      <ng-container *ngIf="!postsError(); else postsErrorTemplate">
+        <ul class="post-list" *ngIf="posts.length; else postsEmpty">
+          <li *ngFor="let post of posts; trackBy: trackByPost">
+            <a class="post-card" [routerLink]="['/posts', post.slug]">
+              <div class="post-meta">
+                <span class="category">{{ post.categoryName }}</span>
+                <span class="dot">•</span>
+                <span>{{ post.authorName }}</span>
+                <span class="dot">•</span>
+                <span>{{ post.createdOn | date: 'mediumDate' }}</span>
+              </div>
+              <h3>{{ post.title }}</h3>
+              <div class="post-stats">
+                <span><strong>{{ post.commentsCount }}</strong> replies</span>
+                <span><strong>{{ post.votesCount }}</strong> votes</span>
+                <span><strong>{{ post.viewCount }}</strong> views</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <aside class="categories-overview">
+    <div class="section-heading">
+      <h2>Featured categories</h2>
+      <p class="muted">Find the perfect place for your next question or story.</p>
+    </div>
+
+    <ng-container *ngIf="categories$ | async as categories; else categoriesLoading">
+      <ng-container *ngIf="!categoriesError(); else categoriesErrorTemplate">
+        <ul class="category-grid" *ngIf="featuredCategories().length; else categoriesEmpty">
+          <li *ngFor="let category of featuredCategories(); trackBy: trackByCategory" class="category-card">
+            <a [routerLink]="['/categories', category.slug]">
+              <header>
+                <h3>{{ category.name }}</h3>
+                <span class="badge">{{ category.postsCount }} posts</span>
+              </header>
+              <p class="description">{{ category.description }}</p>
+              <ul class="subcategories" *ngIf="category.subCategories?.length">
+                <li *ngFor="let sub of category.subCategories | slice: 0:3">{{ sub.name }}</li>
+                <li *ngIf="category.subCategories.length > 3" class="more">+{{ category.subCategories.length - 3 }} more</li>
+              </ul>
+            </a>
+          </li>
+        </ul>
+        <footer class="categories-footer" *ngIf="categories.length > 6">
+          <a routerLink="/categories" class="see-all">See all {{ categories.length }} categories</a>
+        </footer>
+      </ng-container>
+    </ng-container>
+  </aside>
+</section>
+
+<ng-template #postsLoading>
+  <div class="loading-state">
+    <span class="spinner" aria-hidden="true"></span>
+    <p>Loading discussions…</p>
+  </div>
+</ng-template>
+
+<ng-template #categoriesLoading>
+  <div class="loading-state">
+    <span class="spinner" aria-hidden="true"></span>
+    <p>Loading categories…</p>
+  </div>
+</ng-template>
+
+<ng-template #postsEmpty>
+  <p class="muted">No discussions yet. Be the first to start one!</p>
+</ng-template>
+
+<ng-template #categoriesEmpty>
+  <p class="muted">Categories will appear here once they are created.</p>
+</ng-template>
+
+<ng-template #postsErrorTemplate>
+  <p class="error">{{ postsError() }}</p>
+</ng-template>
+
+<ng-template #categoriesErrorTemplate>
+  <p class="error">{{ categoriesError() }}</p>
+</ng-template>

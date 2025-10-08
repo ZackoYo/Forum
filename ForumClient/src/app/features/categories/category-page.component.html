@@ -1,0 +1,94 @@
+<ng-container *ngIf="category$ | async as category; else categoryLoading">
+  <section class="category-hero" *ngIf="category; else notFound">
+    <div class="breadcrumb">
+      <a routerLink="/">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/categories">Categories</a>
+      <span aria-hidden="true">/</span>
+      <span>{{ category.name }}</span>
+    </div>
+
+    <h1>{{ category.name }}</h1>
+    <p class="muted">{{ category.description }}</p>
+
+    <div class="category-meta">
+      <span><strong>{{ category.postsCount }}</strong> posts</span>
+      <span>Created on {{ category.createdOn | date: 'longDate' }}</span>
+    </div>
+
+    <div class="subcategories" *ngIf="category.subCategories?.length">
+      <h2>Browse subcategories</h2>
+      <ul>
+        <li *ngFor="let sub of category.subCategories; trackBy: trackByCategory">
+          <a [routerLink]="['/categories', sub.slug]">{{ sub.name }}</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</ng-container>
+
+<section class="posts-section">
+  <header>
+    <h2>Discussions in this category</h2>
+    <p class="muted">Page {{ currentPage() }}</p>
+  </header>
+
+  <ng-container *ngIf="posts$ | async as posts; else postsLoading">
+    <p class="error" *ngIf="postsError()">{{ postsError() }}</p>
+
+    <ng-container *ngIf="!postsError()">
+      <ul class="post-list" *ngIf="posts.length; else noPosts">
+        <li *ngFor="let post of posts; trackBy: trackByPost" class="post-card">
+          <a [routerLink]="['/posts', post.slug]">
+            <div class="post-meta">
+              <span>{{ post.authorName }}</span>
+              <span class="dot">•</span>
+              <span>{{ post.createdOn | date: 'mediumDate' }}</span>
+            </div>
+            <h3>{{ post.title }}</h3>
+            <div class="post-stats">
+              <span><strong>{{ post.commentsCount }}</strong> replies</span>
+              <span><strong>{{ post.votesCount }}</strong> votes</span>
+              <span><strong>{{ post.viewCount }}</strong> views</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </ng-container>
+  </ng-container>
+
+  <footer class="pagination" *ngIf="!postsError()">
+    <button type="button" (click)="goToPreviousPage()" [disabled]="!canGoBack()">
+      Previous
+    </button>
+    <span>Page {{ currentPage() }}</span>
+    <button type="button" (click)="goToNextPage()" [disabled]="!canGoForward()">
+      Next
+    </button>
+  </footer>
+</section>
+
+<ng-template #categoryLoading>
+  <div class="loading-state">
+    <span class="spinner" aria-hidden="true"></span>
+    <p>Loading category…</p>
+  </div>
+</ng-template>
+
+<ng-template #postsLoading>
+  <div class="loading-state">
+    <span class="spinner" aria-hidden="true"></span>
+    <p>Loading posts…</p>
+  </div>
+</ng-template>
+
+<ng-template #notFound>
+  <section class="not-found">
+    <h1>Category not found</h1>
+    <p>We couldn't locate the category you're looking for. Try browsing the <a routerLink="/categories">categories list</a>.</p>
+  </section>
+</ng-template>
+
+<ng-template #noPosts>
+  <p class="muted">There are no discussions in this category yet.</p>
+</ng-template>

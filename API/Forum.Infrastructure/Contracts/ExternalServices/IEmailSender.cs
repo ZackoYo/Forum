@@ -10,5 +10,5 @@ public interface IEmailSender
 		string to,
 		string subject,
 		string htmlContent,
-		IEnumerable<EmailAttachment> attachments = null);
+		IEnumerable<EmailAttachment>? attachments = null);
 }

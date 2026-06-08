@@ -48,13 +48,24 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton(builder.Configuration);
 
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection(EmailSettings.SectionName));
+
 // Data repositories
 builder.Services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
 // Application services
-builder.Services.AddTransient<IEmailSender, NullMessageSender>();
+var emailProvider = builder.Configuration[$"{EmailSettings.SectionName}:Provider"];
+if (string.Equals(emailProvider, EmailProviderNames.SendGrid, StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddTransient<IEmailSender, SendGridEmailSender>();
+}
+else
+{
+    builder.Services.AddTransient<IEmailSender, NullMessageSender>();
+}
 builder.Services.AddTransient<ISettingsService, SettingsService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IPostService, PostService>();
